@@ -92,7 +92,7 @@ hr.RampBreak--l {
 
 .RampInputSelect--dropdown-container {
   display: none;
-  position: fixed;
+  position: static;/*changed from fixed in order to get it to scroll with the page*/
   width: 100%;
   max-width: 700px;
   border: 1px solid var(--color-darker-shade);
@@ -150,7 +150,20 @@ hr.RampBreak--l {
 }
 
 .RampInputCheckbox--input {
-  display: none;
+  /*allows it to be behind the checkbox label*/
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+
+  /*making it the same size as the checkbox label*/
+  padding: 0.125rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  
+  /*makes it unseen and behind the checkbox label*/
+  opacity: 0;
+  z-index: -1;
 }
 
 .RampButton {
