@@ -41,7 +41,7 @@ export const getTransactionsPaginated = ({
 
 export const getTransactionsByEmployee = ({ employeeId }: RequestByEmployeeParams) => {
   if (!employeeId) {
-    return data.transactions.slice(4)
+    return data.transactions.slice(0,4)
   }
 
   return data.transactions.filter((transaction) => transaction.employee.id === employeeId)
