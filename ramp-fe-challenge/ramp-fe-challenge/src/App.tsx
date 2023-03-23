@@ -12,7 +12,6 @@ export function App() {
   const { data: employees, ...employeeUtils } = useEmployees()
   const { data: paginatedTransactions, ...paginatedTransactionsUtils } = usePaginatedTransactions()
   const { data: transactionsByEmployee, ...transactionsByEmployeeUtils } = useTransactionsByEmployee()
-  const [isLoading, setIsLoading] = useState(false)
   const [isEmployee, setIsEmployee] = useState(false)
 
   const transactions = useMemo(
@@ -21,19 +20,14 @@ export function App() {
   )
 
   const loadAllTransactions = useCallback(async () => {
-    setIsLoading(true)
     transactionsByEmployeeUtils.invalidateData()
-
     await employeeUtils.fetchAll()
     await paginatedTransactionsUtils.fetchAll()
-
-    setIsLoading(false)
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
     async (employeeId: string) => {
       paginatedTransactionsUtils.invalidateData()
-      console.log("employe: "+employeeId)
       setIsEmployee(employeeId!=="")
       await transactionsByEmployeeUtils.fetchById(employeeId)
     },
@@ -76,16 +70,18 @@ export function App() {
 
         <div className="RampGrid">
           <Transactions transactions={transactions} />
-
-          {transactions !== null && (
+          {/*this is changed so that the button does not show if there is no next page*/}
+          {transactions !== null && paginatedTransactions?.nextPage !==null && (
             <button
               className="RampButton"
               disabled={paginatedTransactionsUtils.loading}
               onClick={async () => {
                 await loadAllTransactions()
               }}
+              
               hidden={isEmployee}
             >
+              {/*this is changed above so that the button does not show it is being used by an employee*/}
               View More
             </button>
           )}
