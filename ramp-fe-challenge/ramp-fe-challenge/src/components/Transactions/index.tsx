@@ -9,11 +9,12 @@ export const Transactions: TransactionsComponent = ({ transactions }) => {
 
   const setTransactionApproval = useCallback<SetTransactionApprovalFunction>(
     async ({ transactionId, newValue }) => {
+      //put in so that it clears out previously used transactions 
+      clearCacheByEndpoint(["paginatedTransactions","transactionsByEmployee"])
       await fetchWithoutCache<void, SetTransactionApprovalParams>("setTransactionApproval", {
         transactionId,
         value: newValue,
       })
-      clearCacheByEndpoint(["paginatedTransactions","transactionsByEmployee"])
     },
     [fetchWithoutCache,clearCacheByEndpoint]
   )
